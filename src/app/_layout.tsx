@@ -1,16 +1,14 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useColorScheme } from "react-native";
 
-import AppTabs from '@/components/app-tabs';
-import { useEffect, useState } from 'react';
-import { CustomSplashScreen } from '@/components/CustomSplashScreen';
+import { CustomSplashScreen } from "@/components/CustomSplashScreen";
+import { useEffect, useState } from "react";
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
-
 export default function TabLayout() {
-    const [appIsReady, setAppIsReady] = useState<boolean>(false);
+  const [appIsReady, setAppIsReady] = useState<boolean>(false);
   const [showSplash, setShowSplash] = useState<boolean>(true);
 
   useEffect(() => {
@@ -31,8 +29,11 @@ export default function TabLayout() {
   }, []);
   const colorScheme = useColorScheme();
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AppTabs />
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="details" options={{ headerShown: false }} />
+      </Stack>
       {showSplash && (
         <CustomSplashScreen
           isReady={appIsReady}
@@ -42,5 +43,3 @@ export default function TabLayout() {
     </ThemeProvider>
   );
 }
-
-
