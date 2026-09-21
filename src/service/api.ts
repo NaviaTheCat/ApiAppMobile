@@ -1,4 +1,4 @@
-export interface Monsters{
+export interface Monster{
     id: number;
     name: string;
     image: string;

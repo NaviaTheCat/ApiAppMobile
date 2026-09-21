@@ -1,12 +1,12 @@
 import { Card } from "@/components/Card";
-import { getMonsters, Monsters } from "@/service/api";
+import { getMonsters, Monster } from "@/service/api";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
-  const [monsters, setMonsters] = useState<Monsters[]>([]);
+  const [monsters, setMonsters] = useState<Monster[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
