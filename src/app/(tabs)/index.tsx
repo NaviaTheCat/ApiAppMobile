@@ -1,31 +1,61 @@
 import { Card } from "@/components/Card";
+import { getMonsters, Monster } from "@/service/api";
 import { router } from "expo-router";
-import { ScrollView, StyleSheet, Text } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, ScrollView, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
+  const [monsters, setMonsters] = useState<Monster[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadMonsters() {
+      try {
+        const data = await getMonsters();
+        setMonsters(data);
+      } catch (error) {
+        setError("No se pudieron cargar los datos de la API") 
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadMonsters();
+  }, []);
+
+  if (loading) {
+    return <ActivityIndicator size="large"/>;
+  }
+
+  if (error) {
+    return <Text>{error}</Text>
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.headerTitle}>Personajes</Text>
+        <Text style={styles.headerTitle}>Monstruos de TLOZ</Text>
+
+        {monsters.map((monsters) => (
 
         <Card
-          title="Una Card"
-          imageUrl="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600"
-          description="Explora todos los detalles de este personaje y descubre más información."
+        key={monsters.id}
+          title={monsters.name}
+          imageUrl={monsters.image}
+          description={monsters.description}
           onPress={() =>
             router.push({
               pathname: "/details",
               params: {
-                title: "Una Card",
-                imageUrl:
-                  "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600",
-                description:
-                  "Explora todos los detalles de este personaje y descubre más información.",
+                title: monsters.name,
+                imageUrl: monsters.image,
+                description: monsters.description,
               },
             })
           }
         />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
