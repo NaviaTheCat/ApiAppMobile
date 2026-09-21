@@ -6,14 +6,14 @@ export interface Monster{
 }
 
 interface CreatureResponse {
-    data: Monsters[];
+    data: Monster[];
     message: string;
     status: number;
 }
 
 const API_URL = "https://api.hyrule-compendium.com/v3/compendium/category/monsters";
 
-export async function getMonsters(): Promise<Monsters[]> {
+export async function getMonsters(): Promise<Monster[]> {
     const response = await fetch(API_URL);
 
     if (!response.ok) {
